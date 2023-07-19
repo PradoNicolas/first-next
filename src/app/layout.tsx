@@ -1,8 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
+import { cookies } from 'next/headers'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -10,13 +8,20 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
+  children, login
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  login: React.ReactNode
 }) {
+  const cookieStore = cookies();
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>{
+        cookieStore.get('sessionid')
+          ? children
+          : login
+      }</body>
     </html>
   )
 }
